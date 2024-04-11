@@ -13,12 +13,42 @@ Print first an integer $k$: the minimum number of rooms required.
 After that, print a line that contains the room number of each customer in the same order as in the input. The rooms are numbered $1, 2, \ldots, k$. You can print any valid solution.
 
 ### Constraints
-$$
-\begin{align*}
-1 &\leq n \leq 2 \cdot 10^5 \\
-1 &\leq a \leq b \leq 10^9
-\end{align*}
-$$
+#problem no.
+
+
+
+n = int(input())  # give the input of no.
+customers = []
+for _ in range(n):
+    arrival, departure = map(int, input().split())
+    customers.append((arrival, departure))
+
+customers.sort()
+rooms = {}
+room_number = 1
+
+for arrival, departure in customers:
+    assigned_room = None
+    for room, end_date in rooms.items():
+        if end_date < arrival:
+            assigned_room = room
+            break
+    if assigned_room is None:
+        assigned_room = room_number
+        room_number += 1
+
+    rooms[assigned_room] = departure
+
+print(len(rooms))
+
+for arrival, departure in customers:
+    for room, end_date in rooms.items():
+        if end_date >= arrival:
+            print(room, end=' ')
+            del rooms[room]
+            break
+
+print()
 
 ### Example
 
